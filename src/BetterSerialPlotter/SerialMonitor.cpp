@@ -19,12 +19,12 @@ void SerialMonitor::render(){
     }
     ImGui::BeginChild("Serial Monitor", ImVec2(-1, -1), true, serial_monitor_flags);
     {
+        std::lock_guard<std::mutex> lock(gui->serial_manager.mtx);
         if (textInputRecieved)
         {
             gui->serial_manager.send_serial(reinterpret_cast<unsigned char*>(buf));
             gui->PrintBuffer.push_back(buf);
         }
-        std::lock_guard<std::mutex> lock(gui->serial_manager.mtx);
         for (size_t i = 0; i < gui->PrintBuffer.size(); i++){
             ImGui::Text(gui->PrintBuffer.get_vector()[i].c_str());
         }
