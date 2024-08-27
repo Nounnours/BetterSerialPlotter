@@ -19,7 +19,7 @@ public:
     // variables related to the current state of the serial port
     // int  comport_num    = -1;    // serial port number selected (this is related to enums from SerialPort class in mahi-com)
                                  // -1 indicates that there is not comport num selected yet
-    int  baud_rate      = 9600;  // baud rate selected
+    int  baud_rate      = 115200;  // baud rate selected
     std::atomic<bool> serial_started = false; // indicates whether serial prot has been successfully opened
     std::atomic<bool> baud_status    = false; // indicates whether or not the serial port is consistently reading good data at this baud rate
     std::atomic<bool> serial_status  = false; // indicates that the program is able to receive any information from the serial port
@@ -67,6 +67,8 @@ public:
     void parse_buffer(unsigned char* message, size_t buff_len);
     /// parses a single line received from the buffer
     std::vector<float> parse_line(std::string line);
+    /// Send data over serial
+    void send_serial(unsigned char* buffer);
 
     bool comport_valid();
 

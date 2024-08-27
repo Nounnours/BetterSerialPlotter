@@ -150,6 +150,15 @@ void SerialManager::read_serial(){
     }
 }
 
+void SerialManager::send_serial(unsigned char* buffer)
+{
+    while (serial_started)
+    {
+        serial_port.send_data(buffer, sizeof(buffer));
+        break;
+    }
+}
+
 void SerialManager::parse_buffer(unsigned char* buff, size_t buff_len){
     for (size_t i = 0; i < buff_len; i++){
         // if we got a newline character, (0x0a)
