@@ -9,6 +9,7 @@
 #include <thread>
 #include <nlohmann/json.hpp>
 #include <BetterSerialPlotter/Serialization.hpp>
+using namespace std;
 
 namespace bsp{
 
@@ -71,7 +72,22 @@ void BSP::update(){
         }
         plot_monitor.paused_time = time;
     }
-    
+
+    char buf[1024]{};
+    bool textInputRecieved = false;
+    if (ImGui::InputText("Press enter to send", buf, IM_ARRAYSIZE(buf), ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        //enter pressed grab data
+        string text = buf;
+        textInputRecieved = true;
+    }
+    if (textInputRecieved)
+    {
+        serial_manager.send_serial(reinterpret_cast<unsigned char*>(buf));
+        std::lock_guard<std::mutex> lock(serial_manager.mtx);
+        PrintBuffer.push_back(buf);
+    }
+
     if(serial_manager.baud_status){
         if (ImGui::BeginTabBar("MainAreaTabs")){
             if (ImGui::BeginTabItem("Plots")){
@@ -123,10 +139,13 @@ void BSP::append_all_data(std::vector<float> curr_data){
     
     float curr_time = static_cast<float>(program_clock.get_elapsed_time().as_seconds());
     
-    for (auto i = 0; i < curr_data.size(); i++){
-        mutexed_all_data[i].AddPoint(curr_time, curr_data[i]);
+    if (!(mutexed_all_data.size() < curr_data.size()))
+    {
+        for (auto i = 0; i < curr_data.size(); i++) {
+            mutexed_all_data[i].AddPoint(curr_time, curr_data[i]);
+        }
+        // std::cout << "end append\n";
     }
-    // std::cout << "end append\n";
 }
 
 std::optional<std::reference_wrapper<ScrollingData>> BSP::get_data(char identifier){

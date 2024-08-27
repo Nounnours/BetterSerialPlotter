@@ -77,7 +77,7 @@ void DataPanel::render(){
                     }
                     ImGui::TableNextColumn();
                     char buff[16];
-                    sprintf(buff, "%4.3f", gui->all_data[i].get_back().y);
+                    snprintf(buff, IM_ARRAYSIZE(buff), "%4.3f", gui->all_data[i].get_back().y);
                     ImGui::Text(buff);
                 }
             }
