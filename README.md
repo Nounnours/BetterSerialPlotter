@@ -166,3 +166,4 @@ Configurations are not that well-tested. They will not translate between platfor
 - [x] add tests
 - [x] make more functionalized
 - [x] change to analyzing by line, not by char
+- [x] Supports sending serial data now
