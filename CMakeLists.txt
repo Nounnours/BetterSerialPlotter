@@ -38,8 +38,8 @@ FetchContent_MakeAvailable(mahi-gui)
 
 # MAHI COM
 FetchContent_Declare(mahi-com 
-                    GIT_REPOSITORY https://github.com/nathandunk/mahi-com.git
-                    GIT_TAG origin/mac-serial)
+                    GIT_REPOSITORY https://github.com/Nounnours/mahi-com_fix.git
+                    GIT_TAG origin/master)
 FetchContent_MakeAvailable(mahi-com)
 
 set(SRC_BSP 
